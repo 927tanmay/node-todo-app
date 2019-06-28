@@ -4,13 +4,18 @@ const expect = require('expect');
 var {Todo} = require('./models/todo');
 var {app} = require('./server');
 
+const todos = [{
+    "text":"Test todo 1"
+},
+{
+    "text":"Test todo 2"
+}];
+
+
 beforeEach((done)=>{
-   Todo.deleteMany({}).then(()=>done()); 
+   //Todo.deleteMany({}).then(()=>{return 
+    Todo.insertMany(todos).then(()=>done()) 
 });
-
-
-
-
 
 
 describe('POST/Todos',()=>{
@@ -31,7 +36,7 @@ describe('POST/Todos',()=>{
              }
          
          
-    Todo.find().then((doc)=>{
+    Todo.find({text}).then((doc)=>{
         expect(doc.length).toBe(1);
         expect(doc[0].text).toBe(text);
         done();
@@ -54,7 +59,7 @@ beforeEach((done)=>{
              }
 
              Todo.find().then((doc)=>{
-                 expect(doc.length).toBe(0);
+                 expect(doc.length).toBe(2);
                  done();
              }).catch((e)=>done(e));
          });
